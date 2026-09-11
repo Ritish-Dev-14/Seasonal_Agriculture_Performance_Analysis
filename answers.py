@@ -31,10 +31,21 @@ try:
 except ImportError:
     HAS_DATA_SCIENCE_STACK = False
 
+# Detect Jupyter Notebook / IPython environment
+IS_JUPYTER = False
+try:
+    from IPython import get_ipython
+
+    if get_ipython() is not None:
+        IS_JUPYTER = True
+except ImportError:
+    IS_JUPYTER = False
+
 warnings.filterwarnings("ignore")
 
 if HAS_DATA_SCIENCE_STACK:
-    plt.switch_backend("Agg")
+    if not IS_JUPYTER:
+        plt.switch_backend("Agg")
     try:
         plt.style.use("seaborn-v0_8-whitegrid")
     except OSError:
